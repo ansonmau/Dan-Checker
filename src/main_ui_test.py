@@ -18,7 +18,9 @@ class _Item:
 
 
 def main():
-    app = QApplication(sys.argv   # ── Sample data ───────────────────────────────────────────────────────────
+    app = QApplication(sys.argv)
+
+    # ── Sample data ───────────────────────────────────────────────────────────
     # Deliberately crafted so:
     #   • 2024-02-03 exists in both lists  (same location → yellow pop-out)
     #   • 2024-03-11 exists in both lists  (different locations → purple)
