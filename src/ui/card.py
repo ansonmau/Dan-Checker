@@ -125,8 +125,6 @@ class ItemCard(QFrame):
         row.setContentsMargins(14, 14, 16, 14)
         row.setSpacing(12)
 
-        row.addWidget(badge)
-        row.addWidget(vline())
         row.addWidget(field("Date", self._date_str, theme.ACCENT_TEAL,  90))
         row.addWidget(vline())
         row.addWidget(field("Location", self._location_str, theme.ACCENT_BLUE, 90), stretch=1)
@@ -195,7 +193,6 @@ class ItemCard(QFrame):
             QFrame#ItemCard {{
                 background : {bg};
                 border      : {border};
-                border-radius: 12px;
             }}
         """)
 

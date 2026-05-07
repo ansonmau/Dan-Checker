@@ -1,7 +1,5 @@
 # ─────────────────────────────────────────────────────────────────────────────
-#  src/ui/window.py  –  DualItemListWindow
-# ─────────────────────────────────────────────────────────────────────────────
-from __future__ import annotations
+#  src/ui/window.py  –  DualItemListWindow ───────────────────────────────────────────────────────────────────────────── from __future__ import annotations
 
 from PyQt6.QtCore    import QPoint, QTimer
 from PyQt6.QtGui     import QColor, QPalette
@@ -40,7 +38,7 @@ class DualItemListWindow(QMainWindow):
     ):
         super().__init__(parent)
         self.setWindowTitle(title)
-        self.resize(1280, 700)
+        self.resize(1250, 700)
         self.setMinimumSize(900, 500)
         self._apply_palette()
 
@@ -141,6 +139,11 @@ class DualItemListWindow(QMainWindow):
             self._click_timer = None
             self._reset_click_states()
 
+        # timer
+        self._click_timer = QTimer(self)
+        self._click_timer.setSingleShot(True)
+        self._click_timer.timeout.connect(self._reset_click_states)
+
         source_scroll = self._scroll_left  if side == "left" else self._scroll_right
         target_cards  = self._cards_right  if side == "left" else self._cards_left
         target_scroll = self._scroll_right if side == "left" else self._scroll_left
@@ -150,27 +153,24 @@ class DualItemListWindow(QMainWindow):
         focused_set   = set(focused_cards)
 
         if not focused_cards:
-            return
-
-        # Apply visual states to all cards
-        for c in self._cards_left + self._cards_right:
-            if c is card:
-                c.set_state(ItemCard.STATE_SOURCE)
-            elif c in special_cards:
-                c.set_state(ItemCard.STATE_SPECIAL)
-            elif c in focused_set:
-                c.set_state(ItemCard.STATE_FOCUSED)
-            else:
+            for c in self._cards_left:
                 c.set_state(ItemCard.STATE_GREYED)
+        else:
+            # Apply visual states to all cards
+            for c in self._cards_left + self._cards_right:
+                if c is card:
+                    c.set_state(ItemCard.STATE_SOURCE)
+                elif c in special_cards:
+                    c.set_state(ItemCard.STATE_SPECIAL)
+                elif c in focused_set:
+                    c.set_state(ItemCard.STATE_FOCUSED)
+                else:
+                    c.set_state(ItemCard.STATE_GREYED)
 
-        # Scroll source and first focused card to center in their panels
-        self._scroll_to_center(source_scroll, card)
-        self._scroll_to_center(target_scroll, focused_cards[0])
+            # Scroll source and first focused card to center in their panels
+            # self._scroll_to_center(source_scroll, card)
+            self._scroll_to_center(target_scroll, focused_cards[0])
 
-        # Reset after 2 seconds
-        self._click_timer = QTimer(self)
-        self._click_timer.setSingleShot(True)
-        self._click_timer.timeout.connect(self._reset_click_states)
         self._click_timer.start(2000)
 
     def _reset_click_states(self):

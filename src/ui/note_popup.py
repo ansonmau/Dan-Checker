@@ -23,7 +23,7 @@ class NotePopup(QDialog):
     Saves its content back to the card on "Save".
     """
 
-    _RADIUS  = 14
+    _RADIUS  = 1
     _PADDING = 10   # transparent margin so the shadow can breathe
 
     def __init__(self, card: "ItemCard", parent=None):
@@ -68,7 +68,7 @@ class NotePopup(QDialog):
                 background : {theme.BG_DARK};
                 color      : {theme.TEXT_PRIMARY};
                 border     : 1px solid {theme.BORDER_DEFAULT};
-                border-radius : 8px;
+                border-radius : 1px;
                 padding    : 16px;
                 font-size  : 24px;
             }}
