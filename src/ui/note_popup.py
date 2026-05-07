@@ -53,12 +53,17 @@ class NotePopup(QDialog):
         layout.setContentsMargins(16, 14, 16, 14)
         layout.setSpacing(10)
 
-        header = QLabel("✎  Note")
-        header.setStyleSheet(
-            f"color:{theme.TEXT_LABEL}; font-size:22px; font-weight:700;"
-            f" letter-spacing:0.8px; background:transparent;"
-        )
-        layout.addWidget(header)
+        header_container = QHBoxLayout()
+        header_txt_1 = QLabel( card.get_date_str() )
+        header_txt_2 = QLabel( card.get_location_str() )
+        header_txt_3 = QLabel( "".join(["$", card.get_amount_str()]) )
+        for header_txt in [header_txt_1, header_txt_2, header_txt_3]:
+            header_txt.setStyleSheet(
+                f"color:{theme.TEXT_LABEL}; font-size:18; font-weight:400;"
+                f" letter-spacing:0.8px; background:transparent;"
+            )
+            header_container.addWidget(header_txt)
+        layout.addLayout(header_container)
 
         self._editor = QTextEdit()
         self._editor.setPlaceholderText("Write a note…")

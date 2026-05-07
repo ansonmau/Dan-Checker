@@ -31,10 +31,11 @@ class ItemCard(QFrame):
     # ─────────────────────────────────────────────────────────────────────────
     def __init__(self, item, index: int, parent=None):
         super().__init__(parent)
-        self._item             = item
-        self._index            = index
-        self._date_str         = str(item.get_date())
-        self._location_str     = str(item.get_location())
+        self._item           =   item
+        self._index          =   index
+        self._date_str       =   str(item.get_date())
+        self._location_str   =   str(item.get_location())
+        self._amount_str     =   str(item.get_amount())
 
         self._note             = ""
         self._state            = self.STATE_NORMAL
@@ -135,10 +136,12 @@ class ItemCard(QFrame):
 
     # ── Public API ────────────────────────────────────────────────────────────
 
-    def get_date_str(self)     -> str:  return self._date_str
-    def get_location_str(self) -> str:  return self._location_str
-    def get_note(self)         -> str:  return self._note
-    def has_note(self)         -> bool: return bool(self._note.strip())
+    def get_date_str(self)         ->     str:  return self._date_str
+    def get_location_str(self)     ->     str:  return self._location_str
+    def get_amount_str(self)       ->     str:  return self._amount_str
+    def get_note(self)             ->     str:  return self._note
+    def has_note(self)             ->     bool: return bool(self._note.strip())
+
 
     def set_note(self, text: str):
         self._note    =  text

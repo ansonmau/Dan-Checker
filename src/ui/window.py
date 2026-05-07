@@ -2,7 +2,7 @@
 #  src/ui/window.py  –  DualItemListWindow ───────────────────────────────────────────────────────────────────────────── from __future__ import annotations
 
 from PyQt6.QtCore    import QPoint, QTimer
-from PyQt6.QtGui     import QColor, QPalette
+from PyQt6.QtGui     import QColor, QPalette, QWindow
 from PyQt6.QtWidgets import (
     QFrame, QHBoxLayout, QLabel, QMainWindow,
     QScrollArea, QVBoxLayout, QWidget,
@@ -190,7 +190,7 @@ class DualItemListWindow(QMainWindow):
 
     def _on_right_click(self, card: ItemCard, global_pos: QPoint):
         popup = NotePopup(card, self)
-        popup.show_near(global_pos)
+        popup.show_near(self._get_point_for_center(popup))
         popup.exec()
 
     # ── Connect mode ──────────────────────────────────────────────────────────
@@ -213,6 +213,15 @@ class DualItemListWindow(QMainWindow):
         card.set_connect_selected(True)
         self._connect_pending.append(card)
 
+    # ── Center window ──────────────────────────────────────────────────────────────────
+    def _get_point_for_center(self, window:QWidget):
+        geo = self.frameGeometry()
+
+        # move function moves TOP LEFT corner
+        target_x = geo.x() + (geo.width() - window.width()) // 2
+        target_y = geo.y() + (geo.height() - window.height()) // 2
+
+        return QPoint(target_x, target_y)
     # ── Sync ──────────────────────────────────────────────────────────────────
 
     def _on_sync(self):
