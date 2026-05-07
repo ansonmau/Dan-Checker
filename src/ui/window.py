@@ -1,5 +1,6 @@
 # ─────────────────────────────────────────────────────────────────────────────
-#  src/ui/window.py  –  DualItemListWindow ───────────────────────────────────────────────────────────────────────────── from __future__ import annotations
+#  src/ui/window.py  –  DualItemListWindow ───────────────────────────────────────────────────────────────────────────── 
+from __future__ import annotations
 
 from PyQt6.QtCore    import QPoint, QTimer
 from PyQt6.QtGui     import QColor, QPalette, QWindow
@@ -8,11 +9,11 @@ from PyQt6.QtWidgets import (
     QScrollArea, QVBoxLayout, QWidget,
 )
 
-from ui         import theme
-from ui.card    import ItemCard
-from ui.note_popup import NotePopup
-from ui.panel   import build_panel
-from ui.toolbar import ToolBar
+from ui             import theme
+from ui.card        import ItemCard
+from ui.note_popup  import NotePopup
+from ui.panel       import build_panel
+from ui.toolbar     import ToolBar
 
 
 class DualItemListWindow(QMainWindow):
@@ -49,7 +50,7 @@ class DualItemListWindow(QMainWindow):
         self._scroll_right: QScrollArea | None = None
 
         self._connect_mode = False
-        self._connect_pending:  list[ItemCard] = []
+        self._connect_pending:  dict[str, list[ItemCard]] = {"left": [], "right": []}
         self._connections:      list[tuple[ItemCard, ItemCard]] = []
         self._click_timer:      QTimer | None = None
 
@@ -198,20 +199,30 @@ class DualItemListWindow(QMainWindow):
     def _on_connect_toggle(self, active: bool):
         self._connect_mode = active
         if not active:
-            for card in self._connect_pending:
+            note = ""
+            for card in self._connect_pending["left"]:
+                # QB side
                 card.set_connect_selected(False)
-                card.set_note("connected")
+                note.append("")
+                card.set_note("")
+            for card in self._connect_pending["right"]:
+                #bank side
+                card.set_connect_selected(False)
+                card.set_note("Bank side note")
+
+            for card in self._connect_pending["right"] + self._connect_pending["left"]:
+                card.set_note(note)
             self._connect_pending.clear()
 
     def _handle_connect(self, card: ItemCard, side: str):
         # Toggle off if already pending on this side
-        if card in self._connect_pending:
+        if card in self._connect_pending[side]:
             card.set_connect_selected(False)
-            self._connect_pending.remove(card)
+            self._connect_pending[side].remove(card)
             return
 
         card.set_connect_selected(True)
-        self._connect_pending.append(card)
+        self._connect_pending[side].append(card)
 
     # ── Center window ──────────────────────────────────────────────────────────────────
     def _get_point_for_center(self, window:QWidget):

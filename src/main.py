@@ -30,7 +30,7 @@ def run(xlsx_path, csv_path):
     #         bank_transactions.remove(x)
     #         qb_transactions.remove(x)
     #         qb_d.pop(x)
-    win1 = DualItemListWindow(unmatched_bank_ts, qb_transactions, "Unmatched Transactions", "Bank", "Quickbooks")
+    win1 = DualItemListWindow(qb_transactions, bank_transactions, "Unmatched Transactions", "Quickbooks", "Bank")
     win1.show()
             
     return 0
