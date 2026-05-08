@@ -1,0 +1,10 @@
+et_xmlfile==2.0.0
+markdown-it-py==4.2.0
+mdurl==0.1.2
+openpyxl==3.1.5
+prettytable==3.17.0
+Pygments==2.20.0
+PyQt6==6.11.0
+PyQt6-Qt6==6.11.0
+PyQt6_sip==13.11.1
+wcwidth==0.7.0

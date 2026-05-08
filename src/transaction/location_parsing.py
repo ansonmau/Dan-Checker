@@ -9,6 +9,7 @@ def parse_location(txt:str):
             "Memory Express": ["memory express",],
             "Best Buy": ["best buy",],
             "Western Digital": ["western digital",],
+            "Payment": ["payment"],
     }
 
     txt = txt.lower() 

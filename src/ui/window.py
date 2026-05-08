@@ -199,20 +199,37 @@ class DualItemListWindow(QMainWindow):
     def _on_connect_toggle(self, active: bool):
         self._connect_mode = active
         if not active:
-            note = ""
+            note_contents = []
             for card in self._connect_pending["left"]:
                 # QB side
                 card.set_connect_selected(False)
-                note.append("")
-                card.set_note("")
+                note_contents.append("\t\t".join([
+                        "QB",
+                        card.get_date_str(),
+                        card.get_location_str(),
+                        card.get_amount_str()  
+                     ]))
+                        
             for card in self._connect_pending["right"]:
                 #bank side
                 card.set_connect_selected(False)
-                card.set_note("Bank side note")
+                curr_note = [
+                        "{:>10}".format("BANK"),
+                        "{:>15}".format(card.get_date_str()),
+                        "{:>30}".format(card.get_location_str()),
+                        "{:>10}".format(card.get_amount_str()),
+                        ]
+                note_contents.append("".join(curr_note))
+
 
             for card in self._connect_pending["right"] + self._connect_pending["left"]:
-                card.set_note(note)
-            self._connect_pending.clear()
+                card.set_note("\n".join(note_contents))
+
+            self._clear_connect_pending()
+
+    def _clear_connect_pending(self):
+        self._connect_pending["left"].clear()
+        self._connect_pending["right"].clear()
 
     def _handle_connect(self, card: ItemCard, side: str):
         # Toggle off if already pending on this side
