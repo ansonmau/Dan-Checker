@@ -1,5 +1,6 @@
 # ─────────────────────────────────────────────────────────────────────────────
-#  src/ui/window.py  –  DualItemListWindow ───────────────────────────────────────────────────────────────────────────── 
+#  src/ui/window.py  –  DualItemListWindow 
+# ───────────────────────────────────────────────────────────────────────────── 
 from __future__ import annotations
 
 from PyQt6.QtCore    import QPoint, QTimer
@@ -27,6 +28,13 @@ class DualItemListWindow(QMainWindow):
     title / title_left / title_right
         Window and sub-panel labels.
     """
+
+    _CONNECT_NOTE_MAX_CHARS = {
+            "source": 10,
+            "date": 12,
+            "location": 20,
+            "amount": 12
+            }
 
     def __init__(
         self,
@@ -195,35 +203,16 @@ class DualItemListWindow(QMainWindow):
         popup.exec()
 
     # ── Connect mode ──────────────────────────────────────────────────────────
-
     def _on_connect_toggle(self, active: bool):
         self._connect_mode = active
         if not active:
-            note_contents = []
             for card in self._connect_pending["left"]:
                 # QB side
                 card.set_connect_selected(False)
-                note_contents.append("\t\t".join([
-                        "QB",
-                        card.get_date_str(),
-                        card.get_location_str(),
-                        card.get_amount_str()  
-                     ]))
                         
             for card in self._connect_pending["right"]:
                 #bank side
                 card.set_connect_selected(False)
-                curr_note = [
-                        "{:>10}".format("BANK"),
-                        "{:>15}".format(card.get_date_str()),
-                        "{:>30}".format(card.get_location_str()),
-                        "{:>10}".format(card.get_amount_str()),
-                        ]
-                note_contents.append("".join(curr_note))
-
-
-            for card in self._connect_pending["right"] + self._connect_pending["left"]:
-                card.set_note("\n".join(note_contents))
 
             self._clear_connect_pending()
 

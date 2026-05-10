@@ -75,7 +75,7 @@ class NotePopup(QDialog):
                 border     : 1px solid {theme.BORDER_DEFAULT};
                 border-radius : 1px;
                 padding    : 16px;
-                font-size  : 24px;
+                font-size  : 18px;
             }}
             QTextEdit:focus {{
                 border: 1px solid {theme.ACCENT_BLUE}99;
