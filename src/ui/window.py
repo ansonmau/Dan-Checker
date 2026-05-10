@@ -29,13 +29,6 @@ class DualItemListWindow(QMainWindow):
         Window and sub-panel labels.
     """
 
-    _CONNECT_NOTE_MAX_CHARS = {
-            "source": 10,
-            "date": 12,
-            "location": 20,
-            "amount": 12
-            }
-
     def __init__(
         self,
         items_left:  list,
@@ -206,13 +199,30 @@ class DualItemListWindow(QMainWindow):
     def _on_connect_toggle(self, active: bool):
         self._connect_mode = active
         if not active:
+            note_contents = ["==CONNECTED=="]
+            format_str = "[{}]   ->   {}   {}   ${}"
             for card in self._connect_pending["left"]:
                 # QB side
+                note_contents.append(format_str[:].format(
+                    "Quickbooks",
+                    card.get_date_str(),
+                    card.get_location_str(),
+                    card.get_amount_str()
+                    ))
                 card.set_connect_selected(False)
                         
             for card in self._connect_pending["right"]:
                 #bank side
+                note_contents.append(format_str[:].format(
+                    "Bank",
+                    card.get_date_str(),
+                    card.get_location_str(),
+                    card.get_amount_str()
+                    ))
                 card.set_connect_selected(False)
+
+            for card in self._connect_pending["right"] + self._connect_pending["left"]:
+                card.set_note("\n".join(note_contents))
 
             self._clear_connect_pending()
 

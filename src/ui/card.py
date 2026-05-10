@@ -40,7 +40,7 @@ class ItemCard(QFrame):
         self._note             = ""
         self._state            = self.STATE_NORMAL
         self._connect_selected = False
-        self._connected        = False
+        self._connected        = []
 
         self.setObjectName("ItemCard")
         self.setFrameShape(QFrame.Shape.NoFrame)
@@ -146,13 +146,13 @@ class ItemCard(QFrame):
     def set_note(self, text: str):
         self._note    =  text
         display_text  =  ""
-        preview_line  =  text.split('\n')[-1]
+        preview_line  =  text.split('\n')[0]
         print(f"preview line: {preview_line}")
         if len(preview_line) > self.NOTE_PREVIEW_MAX:
-            # only show the last x chars
-            display_text = "..." + preview_line[-(self.NOTE_PREVIEW_MAX):]
+            # only show the first x chars
+            display_text = preview_line[-self.NOTE_PREVIEW_MAX:] + "..."
         else:
-            display_text = self._note
+            display_text = preview_line
         self._note_preview_lbl.setText(display_text)
         self._refresh_style()
 
@@ -172,8 +172,10 @@ class ItemCard(QFrame):
         self._connect_selected = on
         self._refresh_style()
 
-    def set_connected(self, on: bool):
-        self._connected = on
+    def set_connected(self, connected_cards: dict[str, ItemCard]):
+        if (not connected_cards):
+            return
+        
         self._refresh_style()
 
     # ── Stylesheet ────────────────────────────────────────────────────────────
