@@ -29,6 +29,10 @@ class DualItemListWindow(QMainWindow):
         Window and sub-panel labels.
     """
 
+#                              ╔══════════════════════════════════════════════════════════╗
+#                              ║                           Init                           ║
+#                              ╚══════════════════════════════════════════════════════════╝
+
     def __init__(
         self,
         items_left:  list,
@@ -128,8 +132,14 @@ class DualItemListWindow(QMainWindow):
         panels_widget.setLayout(panels_row)
         ml.addWidget(panels_widget, stretch=1)
 
-    # ── Left click ────────────────────────────────────────────────────────────
 
+#                              ╔══════════════════════════════════════════════════════════╗
+#                              ║                      click handling                      ║
+#                              ╚══════════════════════════════════════════════════════════╝
+
+# ┌──────────────────────────────────────────────────────────┐
+# │ left click                                               │
+# └──────────────────────────────────────────────────────────┘
     def _on_left_click(self, card: ItemCard, side: str):
         if self._connect_mode:
             self._handle_connect(card, side)
@@ -175,11 +185,6 @@ class DualItemListWindow(QMainWindow):
 
         self._click_timer.start(2000)
 
-    def _reset_click_states(self):
-        for c in self._cards_left + self._cards_right:
-            c.set_state(ItemCard.STATE_NORMAL)
-        self._click_timer = None
-
     def _scroll_to_center(self, scroll: QScrollArea | None, card: ItemCard):
         if scroll is None:
             return
@@ -188,14 +193,34 @@ class DualItemListWindow(QMainWindow):
         target          = card_y - (viewport_height - card.height()) // 2
         scroll.verticalScrollBar().setValue(max(0, target))
 
-    # ── Right click ───────────────────────────────────────────────────────────
-
+# ┌──────────────────────────────────────────────────────────┐
+# │ right click                                              │
+# └──────────────────────────────────────────────────────────┘
     def _on_right_click(self, card: ItemCard, global_pos: QPoint):
         popup = NotePopup(card, self)
         popup.show_near(self._get_point_for_center(popup))
         popup.exec()
 
-    # ── Connect mode ──────────────────────────────────────────────────────────
+    def _reset_click_states(self):
+        for c in self._cards_left + self._cards_right:
+            c.set_state(ItemCard.STATE_NORMAL)
+        self._click_timer = None
+
+    def _get_point_for_center(self, window:QWidget):
+        geo = self.frameGeometry()
+
+        # move function moves TOP LEFT corner
+        target_x = geo.x() + (geo.width() - window.width()) // 2
+        target_y = geo.y() + (geo.height() - window.height()) // 2
+
+        return QPoint(target_x, target_y)
+
+
+
+#                              ╔══════════════════════════════════════════════════════════╗
+#                              ║                         Connect                          ║
+#                              ╚══════════════════════════════════════════════════════════╝
+
     def _on_connect_toggle(self, active: bool):
         self._connect_mode = active
         if not active:
@@ -240,23 +265,18 @@ class DualItemListWindow(QMainWindow):
         card.set_connect_selected(True)
         self._connect_pending[side].append(card)
 
-    # ── Center window ──────────────────────────────────────────────────────────────────
-    def _get_point_for_center(self, window:QWidget):
-        geo = self.frameGeometry()
 
-        # move function moves TOP LEFT corner
-        target_x = geo.x() + (geo.width() - window.width()) // 2
-        target_y = geo.y() + (geo.height() - window.height()) // 2
-
-        return QPoint(target_x, target_y)
-    # ── Sync ──────────────────────────────────────────────────────────────────
-
+#                              ╔══════════════════════════════════════════════════════════╗
+#                              ║                           Sync                           ║
+#                              ╚══════════════════════════════════════════════════════════╝
     def _on_sync(self):
         # TODO: fetch from GitHub URL and refresh lists
         pass
 
-    # ── Palette ───────────────────────────────────────────────────────────────
 
+#                              ╔══════════════════════════════════════════════════════════╗
+#                              ║                         Palette                          ║
+#                              ╚══════════════════════════════════════════════════════════╝
     def _apply_palette(self):
         p = QPalette()
         p.setColor(QPalette.ColorRole.Window,     QColor(theme.BG_DARK))
@@ -264,3 +284,11 @@ class DualItemListWindow(QMainWindow):
         p.setColor(QPalette.ColorRole.Base,       QColor(theme.BG_CARD_BASE))
         p.setColor(QPalette.ColorRole.Text,       QColor(theme.TEXT_PRIMARY))
         self.setPalette(p)
+
+#                              ╔══════════════════════════════════════════════════════════╗
+#                              ║                  State Saving / Loading                  ║
+#                              ╚══════════════════════════════════════════════════════════╝
+    def _save_state(self):
+        return
+
+
