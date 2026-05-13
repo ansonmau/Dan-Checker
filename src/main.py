@@ -1,18 +1,26 @@
 import sys
 from PyQt6.QtWidgets import QApplication
-from transaction.transaction import Transaction
+
 from ui.file_select import App 
 from ui.window import DualItemListWindow
 from parser import Parser
+import init
+
 from util import get_root, save_transactions, load_transactions
 
 ROOT = get_root()
+TESTING = 0
+
+
+#                                   ╭────────────────────────────────────────────────╮
+#                                   │                    Release                     │
+#                                   ╰────────────────────────────────────────────────╯
 
 def run(xlsx_path, csv_path):
     qb_transactions     =   [] 
     bank_transactions   =   []
 
-    print("ROOT: ", ROOT)
+    # print("ROOT: ", ROOT)
 
     parser = Parser()
     parser.parse_qb(xlsx_path, qb_transactions)
@@ -33,7 +41,22 @@ def run(xlsx_path, csv_path):
 
     return 0
 
-def test_run():
+
+def main():
+    err = init.full_init()
+    if ( err ):
+        raise ValueError("Init failed")
+        
+    app = QApplication(sys.argv)
+    window = App(run)
+    window.show()
+    sys.exit(app.exec())
+
+#                                   ╭────────────────────────────────────────────────╮
+#                                   │                    Testing                     │
+#                                   ╰────────────────────────────────────────────────╯
+
+def test1():
     qb = []
     bank = []
 
@@ -48,13 +71,12 @@ def main_test():
     run("/home/ansonmau/dev/dan-checker/data/QB.xlsx", "/home/ansonmau/dev/dan-checker/data/bank.csv")
     sys.exit(app.exec())
 
-def main():
-    app = QApplication(sys.argv)
-    window = App(run)
-    window.show()
-    sys.exit(app.exec())
 
+
+# ──────────────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
-    main_test()
-
+    if TESTING:
+        test1()
+    else:
+        main()

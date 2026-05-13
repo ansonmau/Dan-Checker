@@ -46,7 +46,7 @@ class App(QWidget):
             self.csv_input.setText(path)
 
     def run(self):
-        self.run_function("/home/ansonmau/dev/dan-checker/data/QB.xlsx", "/home/ansonmau/dev/dan-checker/data/bank.csv")
-        # self.run_function(self.xlsx_input.text(), self.csv_input.text())
+        # self.run_function("/home/ansonmau/dev/dan-checker/data/QB.xlsx", "/home/ansonmau/dev/dan-checker/data/bank.csv")
+        self.run_function(self.xlsx_input.text(), self.csv_input.text())
 
 

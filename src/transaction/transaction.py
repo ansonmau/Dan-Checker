@@ -84,3 +84,14 @@ class Transaction:
         self._date = datetime.strptime(data[2] , "%y%m%d")
         self._location = data[3]
         self._amount= float(data[4])
+
+    @property
+    def save_inf(self):
+        d = {
+                "account_type":self._account_type,
+                "account_number":self._account_number,
+                "date":self._date,
+                "location":self._location,
+                "amount":self._amount,
+            }
+        return d

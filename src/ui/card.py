@@ -51,6 +51,16 @@ class ItemCard(QFrame):
         self._build_ui()
         self._refresh_style()
 
+    @property
+    def save_inf(self):
+        d = {
+                "item": self._item.save_inf,
+                "note": self._note,
+                "state": self._state,
+                }
+
+        return d
+
     # ── UI construction ───────────────────────────────────────────────────────
 
     def _build_ui(self):
