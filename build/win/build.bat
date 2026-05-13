@@ -1,17 +1,18 @@
-SET "root=C:/dev/dan-checker"
-SET "virt=Z:/"
+::vars
+SET "root=C:\dev\dan-checker"
+SET "virt=Z:\"
 SET "name=Dan Checker"
-
+:: set root
 cd %root%
 :: ensure newest commit
 git pull
 :: pyinstaller magic
-pyinstaller "%root%/src/main.py" ^
+pyinstaller "%root%\src\main.py" ^
 --name "%name%" ^
 --onefile ^
 --windowed ^
---icon="./build/icons/receipt-new.ico" ^
---distpath="bin/" ^
+--icon="%root%\build\icons\receipt_new.ico" ^
+--distpath="bin\" ^
 --log-level INFO
 :: move to virtiofs share
-COPY "%root%/bin/%name%.exe" %virt%
+copy "%root%\bin\%name%.exe" "%virt%"
