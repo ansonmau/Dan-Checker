@@ -137,9 +137,9 @@ class DualItemListWindow(QMainWindow):
 #                              ║                      click handling                      ║
 #                              ╚══════════════════════════════════════════════════════════╝
 
-# ┌──────────────────────────────────────────────────────────┐
-# │ left click                                               │
-# └──────────────────────────────────────────────────────────┘
+    # ┌                                                ┐
+    # │              left click handling               │
+    # └                                                ┘
     def _on_left_click(self, card: ItemCard, side: str):
         if self._connect_mode:
             self._handle_connect(card, side)
@@ -193,9 +193,9 @@ class DualItemListWindow(QMainWindow):
         target          = card_y - (viewport_height - card.height()) // 2
         scroll.verticalScrollBar().setValue(max(0, target))
 
-# ┌──────────────────────────────────────────────────────────┐
-# │ right click                                              │
-# └──────────────────────────────────────────────────────────┘
+    # ┌                                                ┐
+    # │              right click handling              │
+    # └                                                ┘
     def _on_right_click(self, card: ItemCard, global_pos: QPoint):
         popup = NotePopup(card, self)
         popup.show_near(self._get_point_for_center(popup))
@@ -217,15 +217,22 @@ class DualItemListWindow(QMainWindow):
 
 
 
-#                              ╔══════════════════════════════════════════════════════════╗
-#                              ║                         Connect                          ║
-#                              ╚══════════════════════════════════════════════════════════╝
+#                                   ╒════════════════════════════════════════════════╕
+#                                                        Connect
+#                                   ╘════════════════════════════════════════════════╛
 
     def _on_connect_toggle(self, active: bool):
         self._connect_mode = active
         if not active:
-            note_contents = ["==CONNECTED=="]
-            format_str = "[{}]   ->   {}   {}   ${}"
+            # ┌                                                ┐
+            # │                 connect cards                  │
+            # └                                                ┘
+
+            note_contents = []
+            format_str    = "[{}]   ->   {}   {}   ${}"
+
+            # ─< fill out note >────────────────────────────────────────────────────
+            note_contents.append("--- Connected ---------")
             for card in self._connect_pending["left"]:
                 # QB side
                 note_contents.append(format_str[:].format(
@@ -235,7 +242,6 @@ class DualItemListWindow(QMainWindow):
                     card.get_amount_str()
                     ))
                 card.set_connect_selected(False)
-                        
             for card in self._connect_pending["right"]:
                 #bank side
                 note_contents.append(format_str[:].format(
@@ -245,10 +251,15 @@ class DualItemListWindow(QMainWindow):
                     card.get_amount_str()
                     ))
                 card.set_connect_selected(False)
+            note_contents.append("-----------------------")
 
+            note_str = "\n".join(note_contents)
+
+            # ─< set note >─────────────────────────────────────────────────────────
             for card in self._connect_pending["right"] + self._connect_pending["left"]:
-                card.set_note("\n".join(note_contents))
+                card.set_note(note_str)
 
+            # ─< clear connect status >─────────────────────────────────────────────
             self._clear_connect_pending()
 
     def _clear_connect_pending(self):
