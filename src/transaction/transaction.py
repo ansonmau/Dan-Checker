@@ -73,25 +73,12 @@ class Transaction:
         s = f"{self._date!s}{self._location!s}{self._amount!s}"
         return hash(s)
 
-    def _to_csv(self):
-        id_string_contents = [str( self._account_type ), str( self._account_number ), datetime.strftime(self._date, "%y%m%d"), str( self._location ), str( self._amount )]
-        return ",".join(id_string_contents)
-
-    def _from_csv(self, line):
-        data = line.split(",")
-        self._account_type = data[0]
-        self._account_number = data[1]
-        self._date = datetime.strptime(data[2] , "%y%m%d")
-        self._location = data[3]
-        self._amount= float(data[4])
-
     @property
     def save_inf(self):
-        d = {
-                "account_type":self._account_type,
-                "account_number":self._account_number,
-                "date":self._date,
-                "location":self._location,
-                "amount":self._amount,
+        return {
+                "account_type":   self._account_type,
+                "account_number": self._account_number,
+                "date":           self._date,
+                "location":       self._location,
+                "amount":         self._amount,
             }
-        return d

@@ -18,7 +18,7 @@ class XlsxReader:
         self._workbook = openpyxl.load_workbook(self._file_path, read_only=True, data_only=True)
         self._sheet = self._workbook[sheet_name] if sheet_name else self._workbook.active                                                                                          
         self._get_headers()
-        return 1
+        return 0
                                                                                                                                                                              
     def get_value(self, row: int, col: int):                                                                                                                                       
         self._check_sheet_loaded()

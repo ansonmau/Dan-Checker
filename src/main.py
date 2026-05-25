@@ -3,7 +3,7 @@ from PyQt6.QtWidgets import QApplication
 
 from ui.file_select import App 
 from ui.window import DualItemListWindow
-from parser import Parser
+from parser.parser import Parser
 import init
 
 from util import get_root, save_transactions, load_transactions

@@ -1,4 +1,5 @@
 import csv
+
 class CsvReader:
     def __init__(self):
         self._file_path = None
@@ -14,26 +15,25 @@ class CsvReader:
             raise ValueError("No target file set. Call set_target_file() first.")
         with open(self._file_path, newline="", encoding="utf-8-sig") as f:
             self._data = list(csv.reader(f))
-        self._get_headers()
         return 1
 
     def get_value(self, row: int, col: int):
         if not self._data:
             raise RuntimeError("File not opened. Call open() first.")
         return self._data[row][col]
+    
+    def get_objects(self, row_list:list[int], col_list:list[int]):
+        if ( len(row_list) < 1 ) or ( len(col_list) < 1 ):
+            return []
 
-    def _get_headers(self):
-        if (not(self._data)):
-            raise ValueError("data not yet set; call open() first")
-        
-        header_line = self._data[0]
-        for col in range(len(header_line)):
-            val = str(header_line[col]).strip()
-            if (val == ""):
-                continue 
-            self._headers.update({val: col})
-
-        return 1
+        all_obj = []
+        for row_n in row_list:
+            cur_obj = []
+            for col_n in col_list:
+                cur_obj.append(self.get_value(row_n, col_n))
+            all_obj.append(cur_obj)
+                
+        return all_obj
 
     @property
     def num_rows(self):

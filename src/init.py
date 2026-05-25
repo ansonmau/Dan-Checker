@@ -13,7 +13,7 @@ def init_folders():
     return 0
 
 def full_init():
-# ├┤ runs all init functions ├─────────────────────────────────────────┤
+    # ─< runs all init functions >──────────────────────────────────────────
     init_folders()
     return 0
 
