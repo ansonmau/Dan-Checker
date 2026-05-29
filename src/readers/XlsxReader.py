@@ -22,6 +22,10 @@ class XlsxReader:
                                                                                                                                                                              
     def get_value(self, row: int, col: int):                                                                                                                                       
         self._check_sheet_loaded()
+        if not(row) or not(col):
+            # .cell expects number to be > 1 (cannot be 0)
+            return None
+
         return self._sheet.cell(row=row, column=col).value
     
     def get_num_rows(self):

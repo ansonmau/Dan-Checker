@@ -20,6 +20,7 @@ class CsvReader:
     def get_value(self, row: int, col: int):
         if not self._data:
             raise RuntimeError("File not opened. Call open() first.")
+
         return self._data[row][col]
     
     def get_objects(self, row_list:list[int], col_list:list[int]):
@@ -35,10 +36,9 @@ class CsvReader:
                 
         return all_obj
 
-    @property
-    def num_rows(self):
+    def get_num_rows(self):
         return len(self._data)
+
+    def set_headers(self, headers):
+        self._headers = headers
     
-    @property
-    def headers(self):
-        return self._headers

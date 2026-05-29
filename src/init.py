@@ -2,12 +2,13 @@ from util import get_root
 
 ROOT = get_root()
 
-required_folders = [
-        ROOT / 'data'
+REQ_FOLDERS = [
+        ROOT / 'data',
+        ROOT / 'logs',
         ]
 
 def init_folders():
-    for f in required_folders:
+    for f in REQ_FOLDERS:
         f.mkdir(exist_ok=True)
 
     return 0

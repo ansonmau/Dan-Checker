@@ -25,10 +25,15 @@ class Transaction:
             raise ValueError("account_number has not been set.")
         return self._account_number
 
-    def set_date(self, value):
-        if not isinstance(value, datetime):
-            # csv is formatted m/d/Y (no 0 padding)
-            value = datetime.strptime(value, "%-m/%-d/%Y")
+    def set_date(self, value, fmt=""):
+        if not(isinstance(value, datetime)):
+            date_fmts = {
+                    "qb":  "%-m/%-d/%Y",
+                    "rbc": "%-m/%-d/%Y",
+                    "td":  "%m/%d/%Y",
+                    }
+
+            value = datetime.strptime(value, date_fmts[fmt.lower()])
         self._date = value
 
     def get_date(self):
