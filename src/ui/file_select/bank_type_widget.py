@@ -47,8 +47,8 @@ class BankTypeButton(QPushButton):
         super().__init__(label, parent)
         self._label = label
         self.setCheckable(True)
-        self.setFixedHeight(40)
-        self.setFixedWidth(80)
+        self.setFixedHeight(30)
+        self.setFixedWidth(60)
         self._update()
         self.toggled.connect(self._update)
 

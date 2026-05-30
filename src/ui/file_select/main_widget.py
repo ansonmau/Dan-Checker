@@ -1,6 +1,6 @@
 from PyQt6.QtCore import pyqtSignal
 from PyQt6.QtWidgets import (
-    QWidget, QLabel, QLineEdit,
+    QSizePolicy, QWidget, QLabel, QLineEdit,
     QPushButton, QFileDialog, QGridLayout,
     QHBoxLayout,
 )
@@ -13,7 +13,7 @@ class MainWidget(QWidget):
         super().__init__()
         self.run_function = run_function
         self.setWindowTitle("Dan Checker")
-        self.setFixedSize(500, 250)
+        self.setFixedSize(500, 230)
 
         layout = QGridLayout()
         self.setLayout(layout)
@@ -30,7 +30,8 @@ class MainWidget(QWidget):
         layout.addWidget(bank_type_widget, 2, 0, 1, 3)
 
         # run button
-        run_btn = QPushButton("DAN")
+        run_btn = QPushButton("DAN DAN DAN")
+        run_btn.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         run_btn.clicked.connect(self.run)
         layout.addWidget(run_btn, 3, 0, 1, 3)
 
