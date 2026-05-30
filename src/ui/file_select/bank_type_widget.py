@@ -40,6 +40,7 @@ class MainWidget(QWidget):
             if (btn == b):
                 continue 
             b.setChecked(0)
+
         
 
 class BankTypeButton(QPushButton):

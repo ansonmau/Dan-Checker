@@ -44,6 +44,9 @@ class FileUploadWidget(QWidget):
         """Returns just the file name, or None if nothing chosen yet."""
         return os.path.basename(self._file_path) if self._file_path else None
 
+    def isSet(self):
+        return True if self._file_path else False
+
     def clear(self):
         """Reset back to the empty/placeholder state."""
         self._file_path = None
